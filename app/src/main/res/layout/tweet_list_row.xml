@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@drawable/layout_shape"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,25 +9,30 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        >
 
         <LinearLayout
             android:orientation="vertical"
             android:gravity="end"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/user_profile_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="images" />
 
+            <!--
             <ProgressBar
                 android:id="@+id/product_image_loading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="?android:attr/progressBarStyle" />
+             -->
         </LinearLayout>
 
         <LinearLayout
@@ -39,17 +45,20 @@
                 android:id="@+id/user_screen_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_micro"
                 android:text="screen_name" />
 
             <TextView
                 android:id="@+id/user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_micro"
                 android:text="user_name" />
             <TextView
                 android:id="@+id/user_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_micro"
                 android:text="user_id" />
 
         </LinearLayout>
@@ -59,28 +68,42 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        >
 
     <TextView
         android:id="@+id/tweet_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
         android:text="tweet_text"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/create_at"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_small"
         android:text="create_at"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1"
+        android:gravity="right" />
 
     <TextView
         android:id="@+id/client_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_small"
         android:text="・・・から"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:gravity="right"
+        android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>

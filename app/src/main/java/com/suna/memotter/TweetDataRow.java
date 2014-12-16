@@ -11,6 +11,43 @@ public class TweetDataRow {
     private String user_screen_name = "";
     private String user_name = "";
     private String user_id = "";
+    private String user_profile_image_url = "";
+    private String user_profile_image_url_mini = "";
+    private String user_profile_image_url_normal = "";
+    private String user_profile_image_url_bigger = "";
+
+
+    public String getUser_profile_image_url() {
+        return user_profile_image_url;
+    }
+
+    public void setUser_profile_image_url(String user_profile_image_url) {
+        this.user_profile_image_url = user_profile_image_url;
+    }
+
+    public String getUser_profile_image_url_mini() {
+        return user_profile_image_url_mini;
+    }
+
+    public void setUser_profile_image_url_mini(String user_profile_image_url_mini) {
+        this.user_profile_image_url_mini = user_profile_image_url_mini;
+    }
+
+    public String getUser_profile_image_url_normal() {
+        return user_profile_image_url_normal;
+    }
+
+    public void setUser_profile_image_url_normal(String user_profile_image_url_normal) {
+        this.user_profile_image_url_normal = user_profile_image_url_normal;
+    }
+
+    public String getUser_profile_image_url_bigger() {
+        return user_profile_image_url_bigger;
+    }
+
+    public void setUser_profile_image_url_bigger(String user_profile_image_url_bigger) {
+        this.user_profile_image_url_bigger = user_profile_image_url_bigger;
+    }
 
     public String getTweetText() {
         return tweetText;

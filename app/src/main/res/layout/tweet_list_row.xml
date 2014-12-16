@@ -11,19 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
-        >
+        android:layout_weight="1"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:orientation="vertical"
             android:gravity="end"
             android:layout_weight="2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/user_profile_image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:contentDescription="images" />
 
             <!--
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_micro"
                 android:text="user_name" />
+
             <TextView
                 android:id="@+id/user_id"
                 android:layout_width="match_parent"
@@ -71,39 +73,39 @@
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        >
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/tweet_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_medium"
-        android:text="tweet_text"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_weight="1" />
+        <TextView
+            android:id="@+id/tweet_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_medium"
+            android:text="tweet_text"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/create_at"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_small"
-        android:text="create_at"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_weight="1"
-        android:gravity="right" />
+        <TextView
+            android:id="@+id/create_at"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:text="create_at"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:gravity="right" />
 
-    <TextView
-        android:id="@+id/client_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_small"
-        android:text="・・・から"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:gravity="right"
-        android:layout_weight="1" />
+        <TextView
+            android:id="@+id/client_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:text="・・・から"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="right"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>

@@ -65,7 +65,7 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
         ImageView imageView;
         imageView  = (ImageView) convertView.findViewById(R.id.user_profile_image);
         Picasso.with(mContext).setLoggingEnabled(true);
-        Picasso.with(mContext).load(item.getUser_profile_image_url()).fit().into(imageView);
+        Picasso.with(mContext).load(item.getUser_profile_image_url()).error(R.drawable.ic_launcher).fit().into(imageView);
 
         return convertView;
     }

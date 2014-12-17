@@ -18,6 +18,7 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
     private LayoutInflater Inf;
     private Context mContext;
     private DBAdapter mDB = null;
+    private TweetListAdapter mAdapter;
 
     int FLAGS =
             DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE |
@@ -28,6 +29,7 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
         super(context, textViewResourceId, objects);
         mContext = context;
         mDB = DBAdapter;
+        mAdapter = this;
         Inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -112,6 +114,9 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
                     mDB.open();
                     mDB.deleteTweet(mItem.getColId());
                     mDB.close();
+                    mAdapter.remove(mItem);
+                    mAdapter.notifyDataSetChanged();
+                    changeViewText();
                 }
 
             });

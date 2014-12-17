@@ -142,6 +142,7 @@ public class MainActivity extends ActionBarActivity {
         dbAdapter.open();
         dbAdapter.deleteAllTweets();
         dbAdapter.close();
+        TWLadapater.clear();
         TWLadapater.notifyDataSetChanged();
     }
 

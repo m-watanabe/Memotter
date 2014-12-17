@@ -88,8 +88,8 @@
 
             <ImageView
                 android:id="@+id/user_profile_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/image_size_large"
+                android:layout_height="@dimen/image_size_large"
                 android:contentDescription="images" />
 
 

@@ -81,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
         dbAdapter.open();
         Cursor c = dbAdapter.getAllTweets();
 
-        if (c.moveToFirst()) {
+        if (c.moveToLast()) {
             do {
                 TweetDataRow item = new TweetDataRow();
                 item.setColId(c.getInt(c.getColumnIndex(DBAdapter.COL_ID)));
@@ -100,7 +100,7 @@ public class MainActivity extends ActionBarActivity {
                 item.setUser_profile_image_url_normal(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_NORMAL)));
                 item.setUser_profile_image_url_bigger(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_BIGGER)));
                 objects.add(item);
-            } while (c.moveToNext());
+            } while (c.moveToPrevious());
         }
 
         dbAdapter.close();

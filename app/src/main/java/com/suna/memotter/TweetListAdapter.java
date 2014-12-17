@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,15 +17,17 @@ import java.util.List;
 public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
     private LayoutInflater Inf;
     private Context mContext;
+    private DBAdapter mDB = null;
 
     int FLAGS =
             DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE |
-            DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_YEAR |
-            DateUtils.FORMAT_ABBREV_ALL;
+                    DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_YEAR |
+                    DateUtils.FORMAT_ABBREV_ALL;
 
-    public TweetListAdapter(Context context, int textViewResourceId, List<TweetDataRow> objects) {
+    public TweetListAdapter(Context context, int textViewResourceId, List<TweetDataRow> objects, DBAdapter DBAdapter) {
         super(context, textViewResourceId, objects);
         mContext = context;
+        mDB = DBAdapter;
         Inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -63,10 +66,71 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
         client_name.setText(item.getClient_name() + " から");
 
         ImageView imageView;
-        imageView  = (ImageView) convertView.findViewById(R.id.user_profile_image);
+        imageView = (ImageView) convertView.findViewById(R.id.user_profile_image);
         Picasso.with(mContext).setLoggingEnabled(true);
         Picasso.with(mContext).load(item.getUser_profile_image_url()).error(R.drawable.ic_launcher).fit().into(imageView);
 
+        ImageView cardMenu = (ImageView) convertView.findViewById(R.id.card_menu);
+        ImageView cardMenuDelete = (ImageView) convertView.findViewById(R.id.card_menu_delete);
+
+        cardMenu menu = new cardMenu(position, convertView, getItem(position));
+        cardMenu.setOnClickListener(menu);
+        cardMenuDelete.setOnClickListener(menu);
+
         return convertView;
     }
+
+    private class cardMenu implements View.OnClickListener {
+        private int mPosition = 0;
+        private View mView = null;
+        private TweetDataRow mItem = null;
+        private boolean isDeleteMenu = false;
+
+        cardMenu(int position, View view, TweetDataRow item) {
+            mPosition = position;
+            mView = view;
+            mItem = item;
+        }
+
+        public void onClick(View v) {
+
+            changeViewText();
+            Button deleteCancel = (Button) mView.findViewById(R.id.delete_cancel);
+            Button deleteOK = (Button) mView.findViewById(R.id.delete_ok);
+
+            deleteCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeViewText();
+                }
+
+            });
+
+            deleteOK.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDB.open();
+                    mDB.deleteTweet(mItem.getColId());
+                    mDB.close();
+                }
+
+            });
+        }
+
+        void changeViewText() {
+            if (isDeleteMenu) {
+                mView.findViewById(R.id.card_header_layout).setVisibility(View.VISIBLE);
+                mView.findViewById(R.id.card_layout).setVisibility(View.VISIBLE);
+                mView.findViewById(R.id.delete_msg_layout).setVisibility(View.GONE);
+                isDeleteMenu = false;
+            } else {
+                mView.findViewById(R.id.card_header_layout).setVisibility(View.GONE);
+                mView.findViewById(R.id.card_layout).setVisibility(View.GONE);
+                mView.findViewById(R.id.delete_msg_layout).setVisibility(View.VISIBLE);
+                isDeleteMenu = true;
+            }
+        }
+    }
+
+
 }

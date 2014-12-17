@@ -2,6 +2,7 @@ package com.suna.memotter;
 
 public class TweetDataRow {
     private String tweetText = "";
+    private int colId = 0;
     private String tweetId = "";
     private String latitude = "";
     private String longitude = "";
@@ -16,6 +17,13 @@ public class TweetDataRow {
     private String user_profile_image_url_normal = "";
     private String user_profile_image_url_bigger = "";
 
+    public void setColId(int colId) {
+        this.colId = colId;
+    }
+
+    public int getColId() {
+        return colId;
+    }
 
     public String getUser_profile_image_url() {
         return user_profile_image_url;

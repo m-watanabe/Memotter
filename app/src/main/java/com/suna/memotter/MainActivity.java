@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,11 @@ public class MainActivity extends ActionBarActivity {
     private final static String IMAGE_URL_MINI = "user_profile_image_url_mini";
     private final static String IMAGE_URL_NORMAL = "user_profile_image_url_normal";
     private final static String IMAGE_URL_BIGGER = "user_profile_image_url_bigger";
-    static DBAdapter dbAdapter;
+    private static DBAdapter dbAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    public TweetListAdapter TWLadapater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,7 @@ public class MainActivity extends ActionBarActivity {
         if (c.moveToFirst()) {
             do {
                 TweetDataRow item = new TweetDataRow();
+                item.setColId(c.getInt(c.getColumnIndex(DBAdapter.COL_ID)));
                 item.setTweetText(c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_TEXT)));
                 item.setTweetId(c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_ID)));
                 item.setLatitude(c.getString(c.getColumnIndex(DBAdapter.COL_LATITUDE)));
@@ -101,9 +105,9 @@ public class MainActivity extends ActionBarActivity {
 
         dbAdapter.close();
 
-        TweetListAdapter adapater = new TweetListAdapter(mActivity, 0, objects);
+        TWLadapater = new TweetListAdapter(mActivity, 0, objects, dbAdapter);
         ListView list = (ListView) mActivity.findViewById(R.id.tweet_list);
-        list.setAdapter(adapater);
+        list.setAdapter(TWLadapater);
     }
 
     @Override
@@ -138,6 +142,7 @@ public class MainActivity extends ActionBarActivity {
         dbAdapter.open();
         dbAdapter.deleteAllTweets();
         dbAdapter.close();
+        TWLadapater.notifyDataSetChanged();
     }
 
     private void setDataFromTwicca(Intent intent) {

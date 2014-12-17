@@ -17,9 +17,8 @@
             android:layout_height="wrap_content"
             android:divider="#ffbebebe"
             android:dividerHeight="1dp"
+            android:scrollbars="none"
             android:fadingEdge="none" />
-
-
 
     </LinearLayout>
 

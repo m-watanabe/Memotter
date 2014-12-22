@@ -1,7 +1,10 @@
 package com.suna.memotter;
 
 import android.content.Context;
+import android.text.Spannable;
 import android.text.format.DateUtils;
+import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +88,20 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
         cardMenuDelete.setOnClickListener(menu);
 
         return convertView;
+    }
+
+    private String[] expandUrl(TextView tv) {
+        // TODO 短縮URLの展開については後でちゃんと考える
+        String[] expandedUrls = new String[];
+
+        if(tv.getText() instanceof Spannable){
+            URLSpan[] urls = tv.getUrls();
+            int i = 0;
+            for (URLSpan urlSpan : urls) {
+                expandedUrls[i] = urlSpan.getURL();
+                i++;
+            }
+        }
     }
 
     private class cardMenu implements View.OnClickListener {

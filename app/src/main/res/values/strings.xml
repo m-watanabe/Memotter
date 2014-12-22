@@ -3,6 +3,7 @@
 
     <string name="app_name">Memotter</string>
     <string name="action_settings">Settings</string>
+    <string name="export_data">データをエクスポート</string>
     <string name="delete_all_data">全データ削除</string>
     <string name="delete_msg">削除しますか？</string>
     <string name="cancel">キャンセル</string>

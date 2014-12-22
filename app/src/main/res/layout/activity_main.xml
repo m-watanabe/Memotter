@@ -35,6 +35,13 @@
             android:id="@+id/delete_all"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:text="@string/export_data"
+            android:onClick="exportData"/>
+
+        <Button
+            android:id="@+id/delete_all"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:text="@string/delete_all_data"
             android:onClick="deleteAllData"/>
     </LinearLayout>

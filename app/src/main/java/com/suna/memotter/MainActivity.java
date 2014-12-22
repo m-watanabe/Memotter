@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,6 +141,45 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void exportData(View v) {
+        // DBにあるデータをJSON形式でExportする
+        dbAdapter.open();
+        Cursor c = dbAdapter.getAllTweets();
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+
+            if (c.moveToFirst()) {
+                do {
+                    JSONObject jsonOneData = new JSONObject();
+                    jsonOneData.put(TWEET_TEXT, c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_TEXT)));
+                    jsonOneData.put(TWEET_ID, c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_ID)));
+                    jsonOneData.put(LATITUDE, c.getString(c.getColumnIndex(DBAdapter.COL_LATITUDE)));
+                    jsonOneData.put(LONGITUDE, c.getString(c.getColumnIndex(DBAdapter.COL_LONGITUDE)));
+                    jsonOneData.put(CREATE_AT, c.getString(c.getColumnIndex(DBAdapter.COL_CREATE_AT)));
+                    jsonOneData.put(CLIENT_NAME, c.getString(c.getColumnIndex(DBAdapter.COL_CLIENT_NAME)));
+                    jsonOneData.put(IN_REPLY_TO, c.getString(c.getColumnIndex(DBAdapter.COL_IN_REPLY_TO)));
+                    jsonOneData.put(USER_SCREEN_NAME, c.getString(c.getColumnIndex(DBAdapter.COL_USER_SCREEN_NAME)));
+                    jsonOneData.put(USER_NAME, c.getString(c.getColumnIndex(DBAdapter.COL_USER_NAME)));
+                    jsonOneData.put(USER_ID, c.getString(c.getColumnIndex(DBAdapter.COL_USER_ID)));
+                    jsonOneData.put(IMAGE_URL, c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE)));
+                    jsonOneData.put(IMAGE_URL_MINI, c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_MINI)));
+                    jsonOneData.put(IMAGE_URL_NORMAL, c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_NORMAL)));
+                    jsonOneData.put(IMAGE_URL_BIGGER, c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_BIGGER)));
+                    jsonArray.put(jsonOneData);
+                } while (c.moveToNext());
+            }
+            jsonObject.put("DataList", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        dbAdapter.close();
+
+    }
+
 
     public void deleteAllData(View v) {
         dbAdapter.open();

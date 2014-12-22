@@ -15,6 +15,7 @@ public class DBAdapter {
 
     public static final String TABLE_NAME = "tweets";
     public static final String COL_ID = "_id";
+    public static final String COL_TYPE = "type";
     public static final String COL_TWEET_TEXT = "tweet_text";
     public static final String COL_TWEET_ID = "tweet_id";
     public static final String COL_LATITUDE = "latitude";
@@ -54,8 +55,9 @@ public class DBAdapter {
             db.execSQL(
                     "CREATE TABLE " + TABLE_NAME + " ("
                             + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                            + COL_TYPE + " TEXT NOT NULL,"
                             + COL_TWEET_TEXT + " TEXT NOT NULL,"
-                            + COL_TWEET_ID + " TEXT NOT NULL,"
+                            + COL_TWEET_ID + " TEXT,"
                             + COL_LATITUDE + " TEXT,"
                             + COL_LONGITUDE + " TEXT,"
                             + COL_CREATE_AT + " TEXT NOT NULL,"
@@ -113,6 +115,7 @@ public class DBAdapter {
 
     public void saveTweet(TweetDataRow item){
         ContentValues values = new ContentValues();
+        values.put(COL_TYPE, item.getType());
         values.put(COL_TWEET_TEXT, item.getTweetText());
         values.put(COL_TWEET_ID, item.getTweetId());
         values.put(COL_LATITUDE, item.getLatitude());

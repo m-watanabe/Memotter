@@ -7,23 +7,29 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
     public Activity mActivity;
+    private final static String TYPE = "TYPE";
+    private final static String TYPE_WEB = "WEB";
+    private final static String TYPE_TWICCA = "TWICCA";
+
+    private final static String FROM_WEB = "android.intent.action.SEND";
     private final static String FROM_TWICCA = "jp.r246.twicca.ACTION_SHOW_TWEET";
     private final static String TWEET_TEXT = "android.intent.extra.TEXT";
     private final static String TWEET_ID = "id";
@@ -65,6 +71,8 @@ public class MainActivity extends ActionBarActivity {
         if (i != null && i.getAction().toString().equals(FROM_TWICCA)) {
             // intentから起動
             setDataFromTwicca(i);
+        } else if (i != null && i.getAction().toString().equals(FROM_WEB)) {
+            setDataFromWeb(i);
         } else {
             // そのまま起動
         }
@@ -89,6 +97,7 @@ public class MainActivity extends ActionBarActivity {
             do {
                 TweetDataRow item = new TweetDataRow();
                 item.setColId(c.getInt(c.getColumnIndex(DBAdapter.COL_ID)));
+                item.setType(c.getString(c.getColumnIndex(DBAdapter.COL_TYPE)));
                 item.setTweetText(c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_TEXT)));
                 item.setTweetId(c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_ID)));
                 item.setLatitude(c.getString(c.getColumnIndex(DBAdapter.COL_LATITUDE)));
@@ -154,6 +163,7 @@ public class MainActivity extends ActionBarActivity {
             if (c.moveToFirst()) {
                 do {
                     JSONObject jsonOneData = new JSONObject();
+                    jsonOneData.put(TYPE, c.getString(c.getColumnIndex(DBAdapter.COL_TYPE)));
                     jsonOneData.put(TWEET_TEXT, c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_TEXT)));
                     jsonOneData.put(TWEET_ID, c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_ID)));
                     jsonOneData.put(LATITUDE, c.getString(c.getColumnIndex(DBAdapter.COL_LATITUDE)));
@@ -191,7 +201,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void setDataFromTwicca(Intent intent) {
         TweetDataRow itemData = new TweetDataRow();
-
+        itemData.setType(TYPE_TWICCA);
         itemData.setTweetText(intent.getStringExtra(TWEET_TEXT));
         itemData.setTweetId(intent.getStringExtra(TWEET_ID));
         itemData.setLatitude(intent.getStringExtra(LATITUDE));
@@ -206,6 +216,28 @@ public class MainActivity extends ActionBarActivity {
         itemData.setUser_profile_image_url_mini(intent.getStringExtra(IMAGE_URL_MINI));
         itemData.setUser_profile_image_url_normal(intent.getStringExtra(IMAGE_URL_NORMAL));
         itemData.setUser_profile_image_url_bigger(intent.getStringExtra(IMAGE_URL_BIGGER));
+
+        dbAdapter.open();
+        dbAdapter.saveTweet(itemData);
+        dbAdapter.close();
+    }
+
+    private void setDataFromWeb(Intent intent) {
+        TweetDataRow itemData = new TweetDataRow();
+        String url = intent.getStringExtra(Intent.EXTRA_TEXT);
+        String subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+
+        itemData.setType(TYPE_WEB);
+        itemData.setTweetText(subject + "\n" + url);
+        itemData.setCreate_at(String.valueOf(System.currentTimeMillis()));
+        itemData.setClient_name("web");
+        itemData.setUser_screen_name("web");
+        itemData.setUser_name("web");
+        itemData.setUser_id("web");
+        itemData.setUser_profile_image_url("R.drawable.browser_icon");
+        itemData.setUser_profile_image_url_mini("R.drawable.browser_icon");
+        itemData.setUser_profile_image_url_normal("R.drawable.browser_icon");
+        itemData.setUser_profile_image_url_bigger("R.drawable.browser_icon");
 
         dbAdapter.open();
         dbAdapter.saveTweet(itemData);

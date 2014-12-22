@@ -78,7 +78,11 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
         holder.create_at.setText(DateUtils.formatDateTime(mContext, Long.parseLong(timeString), FLAGS));
         holder.client_name.setText(item.getClient_name() + " から");
         Picasso.with(mContext).setLoggingEnabled(true);
-        Picasso.with(mContext).load(item.getUser_profile_image_url()).error(R.drawable.ic_launcher).fit().into(holder.imageView);
+        if(item.getType().equals("TWICCA")) {
+            Picasso.with(mContext).load(item.getUser_profile_image_url()).error(R.drawable.ic_launcher).fit().into(holder.imageView);
+        } else if(item.getType().equals("WEB")) {
+            Picasso.with(mContext).load(R.drawable.browser_icon).error(R.drawable.ic_launcher).fit().into(holder.imageView);
+        }
 
         ImageView cardMenu = (ImageView) convertView.findViewById(R.id.card_menu);
         ImageView cardMenuDelete = (ImageView) convertView.findViewById(R.id.card_menu_delete);
@@ -91,17 +95,20 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
     }
 
     private String[] expandUrl(TextView tv) {
-        // TODO 短縮URLの展開については後でちゃんと考える
-        String[] expandedUrls = new String[];
+        // TODO 短縮URLの展開については後でちゃ んと考える
+        String[] expandedUrls = null;
+
 
         if(tv.getText() instanceof Spannable){
             URLSpan[] urls = tv.getUrls();
             int i = 0;
+            expandedUrls = new String[urls.length];
             for (URLSpan urlSpan : urls) {
                 expandedUrls[i] = urlSpan.getURL();
                 i++;
             }
         }
+        return expandedUrls;
     }
 
     private class cardMenu implements View.OnClickListener {

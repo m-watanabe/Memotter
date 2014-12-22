@@ -1,6 +1,7 @@
 package com.suna.memotter;
 
 public class TweetDataRow {
+    private String type = "";
     private String tweetText = "";
     private int colId = 0;
     private String tweetId = "";
@@ -16,6 +17,14 @@ public class TweetDataRow {
     private String user_profile_image_url_mini = "";
     private String user_profile_image_url_normal = "";
     private String user_profile_image_url_bigger = "";
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
 
     public void setColId(int colId) {
         this.colId = colId;

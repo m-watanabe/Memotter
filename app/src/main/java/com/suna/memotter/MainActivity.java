@@ -12,11 +12,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,12 +67,12 @@ public class MainActivity extends ActionBarActivity {
         mActivity = this;
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        mDrawerToggle = new ActionBarDrawerToggle(mActivity, mDrawerLayout, R.string.app_name, R.string.app_name);
-        mDrawerToggle.setDrawerIndicatorEnabled(false);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        //mDrawerToggle = new ActionBarDrawerToggle(mActivity, mDrawerLayout, R.string.app_name, R.string.app_name);
+        //mDrawerToggle.setDrawerIndicatorEnabled(false);
+        //mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         dbAdapter = new DBAdapter(this);
         Intent i = getIntent();
@@ -183,8 +192,22 @@ public class MainActivity extends ActionBarActivity {
             }
             jsonObject.put("DataList", jsonArray);
 
+            File extStorage = getExternalFilesDir("exported");
+            String s = new SimpleDateFormat("yyyyMMddHHKKmmss").format( new Date());
+            String filePath = extStorage + "/" + s +  ".json";
+            File file = new File(filePath);
+            FileWriter filewriter;
 
+            filewriter = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(filewriter);
+            PrintWriter pw = new PrintWriter(bw);
+            pw.write(jsonObject.toString());
+            pw.close();
 
+            Toast.makeText(mActivity, filePath + "　にエクスポートしました", Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {

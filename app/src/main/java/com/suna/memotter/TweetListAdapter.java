@@ -78,9 +78,9 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
         holder.create_at.setText(DateUtils.formatDateTime(mContext, Long.parseLong(timeString), FLAGS));
         holder.client_name.setText(item.getClient_name() + " から");
         Picasso.with(mContext).setLoggingEnabled(true);
-        if(item.getType().equals("TWICCA")) {
+        if(item.isTwicca()) {
             Picasso.with(mContext).load(item.getUser_profile_image_url()).error(R.drawable.ic_launcher).fit().into(holder.imageView);
-        } else if(item.getType().equals("WEB")) {
+        } else if(item.isWeb()) {
             Picasso.with(mContext).load(R.drawable.browser_icon).error(R.drawable.ic_launcher).fit().into(holder.imageView);
         }
 
@@ -95,7 +95,7 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
     }
 
     private String[] expandUrl(TextView tv) {
-        // TODO 短縮URLの展開については後でちゃ んと考える
+        // TODO 短縮URLの展開については後でちゃんと考える
         String[] expandedUrls = null;
 
 
@@ -158,9 +158,15 @@ public class TweetListAdapter extends ArrayAdapter<TweetDataRow> {
                 mView.findViewById(R.id.delete_msg_layout).setVisibility(View.GONE);
                 isDeleteMenu = false;
             } else {
+                int width = mView.findViewById(R.id.layout_root).getWidth();
+                int height = mView.findViewById(R.id.layout_root).getHeight();
+
                 mView.findViewById(R.id.card_header_layout).setVisibility(View.GONE);
                 mView.findViewById(R.id.card_layout).setVisibility(View.GONE);
                 mView.findViewById(R.id.delete_msg_layout).setVisibility(View.VISIBLE);
+
+                mView.findViewById(R.id.layout_root).setMinimumHeight(height);
+
                 isDeleteMenu = true;
             }
         }

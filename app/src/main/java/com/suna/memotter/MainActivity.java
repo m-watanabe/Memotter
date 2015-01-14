@@ -182,11 +182,15 @@ public class MainActivity extends ActionBarActivity {
                 } while (c.moveToNext());
             }
             jsonObject.put("DataList", jsonArray);
+
+
+
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        } finally {
+            dbAdapter.close();
 
-        dbAdapter.close();
+        }
 
     }
 

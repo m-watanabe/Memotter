@@ -146,5 +146,11 @@ public class TweetDataRow {
         this.user_id = user_id;
     }
 
+    public boolean isTwicca() {
+        return getType().equals("TWICCA");
+    }
+    public boolean isWeb() {
+        return getType().equals("WEB");
+    }
 
 }

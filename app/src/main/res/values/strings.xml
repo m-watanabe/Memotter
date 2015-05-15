@@ -8,5 +8,7 @@
     <string name="delete_msg">削除しますか？</string>
     <string name="cancel">キャンセル</string>
     <string name="ok">OK</string>
+    <string name="deta_not_found">データがありません</string>
+    <string name="to_exported">　にエクスポートしました</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -97,38 +99,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setTweetList() {
-        List<TweetDataRow> objects = new ArrayList<TweetDataRow>();
-
-        dbAdapter.open();
-        Cursor c = dbAdapter.getAllTweets();
-
-        if (c.moveToLast()) {
-            do {
-                TweetDataRow item = new TweetDataRow();
-                item.setColId(c.getInt(c.getColumnIndex(DBAdapter.COL_ID)));
-                item.setType(c.getString(c.getColumnIndex(DBAdapter.COL_TYPE)));
-                item.setTweetText(c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_TEXT)));
-                item.setTweetId(c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_ID)));
-                item.setLatitude(c.getString(c.getColumnIndex(DBAdapter.COL_LATITUDE)));
-                item.setLongitude(c.getString(c.getColumnIndex(DBAdapter.COL_LONGITUDE)));
-                item.setCreate_at(c.getString(c.getColumnIndex(DBAdapter.COL_CREATE_AT)));
-                item.setClient_name(c.getString(c.getColumnIndex(DBAdapter.COL_CLIENT_NAME)));
-                item.setIn_reply_to_status_id(c.getString(c.getColumnIndex(DBAdapter.COL_IN_REPLY_TO)));
-                item.setUser_screen_name(c.getString(c.getColumnIndex(DBAdapter.COL_USER_SCREEN_NAME)));
-                item.setUser_name(c.getString(c.getColumnIndex(DBAdapter.COL_USER_NAME)));
-                item.setUser_id(c.getString(c.getColumnIndex(DBAdapter.COL_USER_ID)));
-                item.setUser_profile_image_url(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE)));
-                item.setUser_profile_image_url_mini(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_MINI)));
-                item.setUser_profile_image_url_normal(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_NORMAL)));
-                item.setUser_profile_image_url_bigger(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_BIGGER)));
-                objects.add(item);
-            } while (c.moveToPrevious());
-        }
-
-        dbAdapter.close();
+        List<TweetDataRow> objects = dbAdapter.getAllTweets();
 
         TWLadapater = new TweetListAdapter(mActivity, 0, objects, dbAdapter);
         ListView list = (ListView) mActivity.findViewById(R.id.tweet_list);
+        list.setEmptyView((TextView)mActivity.findViewById(R.id.emptyTextView));
         list.setAdapter(TWLadapater);
     }
 
@@ -163,7 +138,11 @@ public class MainActivity extends ActionBarActivity {
     public void exportData(View v) {
         // DBにあるデータをJSON形式でExportする
         dbAdapter.open();
-        Cursor c = dbAdapter.getAllTweets();
+        Cursor c = dbAdapter.getAllTweetsDB();
+
+        if(!c.moveToFirst()){
+            return;
+        }
 
         try {
             JSONObject jsonObject = new JSONObject();
@@ -204,7 +183,7 @@ public class MainActivity extends ActionBarActivity {
             pw.write(jsonObject.toString());
             pw.close();
 
-            Toast.makeText(mActivity, filePath + "　にエクスポートしました", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, filePath + getString(R.string.to_exported), Toast.LENGTH_SHORT).show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -226,7 +205,7 @@ public class MainActivity extends ActionBarActivity {
         TWLadapater.notifyDataSetChanged();
     }
 
-    private void setDataFromTwicca(Intent intent) {
+    private void setDataFromTwicca(@NonNull Intent intent) {
         TweetDataRow itemData = new TweetDataRow();
         itemData.setType(TYPE_TWICCA);
         itemData.setTweetText(intent.getStringExtra(TWEET_TEXT));
@@ -249,7 +228,7 @@ public class MainActivity extends ActionBarActivity {
         dbAdapter.close();
     }
 
-    private void setDataFromWeb(Intent intent) {
+    private void setDataFromWeb(@NonNull Intent intent) {
         TweetDataRow itemData = new TweetDataRow();
         String url = intent.getStringExtra(Intent.EXTRA_TEXT);
         String subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);

@@ -1,6 +1,8 @@
 package com.suna.memotter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -109,9 +111,45 @@ public class DBAdapter {
         return db.delete(TABLE_NAME, COL_ID + "=" + id, null) > 0;
     }
 
-    public Cursor getAllTweets(){
+    public Cursor getAllTweetsDB(){
         return db.query(TABLE_NAME, null, null, null, null, null, null);
     }
+
+    public List<TweetDataRow> getAllTweets(){
+        List<TweetDataRow> objects = new ArrayList<TweetDataRow>();
+
+        this.open();
+
+        Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
+
+        if (c.moveToLast()) {
+            do {
+                TweetDataRow item = new TweetDataRow();
+                item.setColId(c.getInt(c.getColumnIndex(DBAdapter.COL_ID)));
+                item.setType(c.getString(c.getColumnIndex(DBAdapter.COL_TYPE)));
+                item.setTweetText(c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_TEXT)));
+                item.setTweetId(c.getString(c.getColumnIndex(DBAdapter.COL_TWEET_ID)));
+                item.setLatitude(c.getString(c.getColumnIndex(DBAdapter.COL_LATITUDE)));
+                item.setLongitude(c.getString(c.getColumnIndex(DBAdapter.COL_LONGITUDE)));
+                item.setCreate_at(c.getString(c.getColumnIndex(DBAdapter.COL_CREATE_AT)));
+                item.setClient_name(c.getString(c.getColumnIndex(DBAdapter.COL_CLIENT_NAME)));
+                item.setIn_reply_to_status_id(c.getString(c.getColumnIndex(DBAdapter.COL_IN_REPLY_TO)));
+                item.setUser_screen_name(c.getString(c.getColumnIndex(DBAdapter.COL_USER_SCREEN_NAME)));
+                item.setUser_name(c.getString(c.getColumnIndex(DBAdapter.COL_USER_NAME)));
+                item.setUser_id(c.getString(c.getColumnIndex(DBAdapter.COL_USER_ID)));
+                item.setUser_profile_image_url(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE)));
+                item.setUser_profile_image_url_mini(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_MINI)));
+                item.setUser_profile_image_url_normal(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_NORMAL)));
+                item.setUser_profile_image_url_bigger(c.getString(c.getColumnIndex(DBAdapter.COL_IMAGE_BIGGER)));
+                objects.add(item);
+            } while (c.moveToPrevious());
+        }
+
+        this.close();
+
+        return(objects);
+    }
+
 
     public void saveTweet(TweetDataRow item){
         ContentValues values = new ContentValues();
